@@ -38,7 +38,7 @@ def ingest_pdf(file, session_id: str) -> int:
     # 1. Validate
     if not filename.lower().endswith(".pdf"):
         raise ValueError("Only PDF files are supported.")
-    if len(data) > MAX_FILE_MB * 1024 * 1024:
+    if len(data) > MAX_FILE_MB * 1024 * 1024:    # max filesize=5 ; mentioned in config.py
         raise ValueError(f"File is too large. Max size is {MAX_FILE_MB} MB.")
 
     # 2. Save to data/uploads/<session_id>/

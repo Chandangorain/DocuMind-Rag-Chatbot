@@ -5,9 +5,9 @@ from backend.ingest import ingest_pdf, clear_session
 from backend.retriever import get_retriever
 from backend.graph import build_graph, ask
 
-st.set_page_config(page_title="Resume RAG Assistant", page_icon="📄")
-st.title("📄 Resume RAG Assistant")
-st.caption("Upload a resume and ask questions about it.")
+st.set_page_config(page_title=" RAG Assistant", page_icon="📄")
+st.title("📄 RAG Assistant")
+st.caption("Upload a document and ask questions about it.")
 
 
 # ---------- Session state (survives Streamlit reruns) ----------
@@ -52,7 +52,7 @@ with st.sidebar:
         for name in st.session_state.files:
             st.write(f"- {name}")
 
-    if st.button("Upload new resume"):
+    if st.button("Upload new document"):
         if st.session_state.graph is not None:
             try:
                 clear_session(st.session_state.session_id)
@@ -67,7 +67,7 @@ with st.sidebar:
 ready = st.session_state.graph is not None
 
 if not ready:
-    st.info("👈 Upload a resume PDF in the sidebar and click **Process** to start.")
+    st.info("👈 Upload a  PDF in the sidebar and click **Process** to start.")
 
 # show previous messages
 for m in st.session_state.messages:
