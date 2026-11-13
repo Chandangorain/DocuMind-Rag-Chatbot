@@ -23,6 +23,10 @@ CHUNK_OVERLAP = 100     # overlap so sentences aren't cut off
 TOP_K = 4               # chunks retrieved per question
 MAX_REWRITES = 2        # max query rewrites in the graph
 
+# ---------- Semantic cache ----------
+CACHE_ENABLED = True
+CACHE_DISTANCE_THRESHOLD = 0.10   # cosine distance; 0 = identical, lower = stricter
+
 # ---------- Upload limits ----------
 MAX_FILE_MB = 5
 

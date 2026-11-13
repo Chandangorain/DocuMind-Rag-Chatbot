@@ -1,3 +1,5 @@
+from backend.cache import lookup, store, clear_cache, looks_like_follow_up
+from backend.config import CACHE_ENABLED
 import uuid
 import streamlit as st
 
@@ -38,6 +40,7 @@ with st.sidebar:
             with st.spinner("Reading and indexing..."):
                 for f in uploaded:
                     ingest_pdf(f, st.session_state.session_id)
+                    clear_cache(st.session_state.session_id)   # NEW: documents changed
                 retriever = get_retriever(st.session_state.session_id)
                 st.session_state.graph = build_graph(retriever)
                 st.session_state.files = [f.name for f in uploaded]
@@ -58,6 +61,7 @@ with st.sidebar:
                 clear_session(st.session_state.session_id)
             except Exception:
                 pass
+            clear_cache(st.session_state.session_id)    
         init_state()
         st.session_state.uploader_key += 1
         st.rerun()
