@@ -61,7 +61,7 @@ with st.sidebar:
                 clear_session(st.session_state.session_id)
             except Exception:
                 pass
-            clear_cache(st.session_state.session_id)    
+            clear_cache(st.session_state.session_id)        #clear cache when new document is uploaded
         init_state()
         st.session_state.uploader_key += 1
         st.rerun()
