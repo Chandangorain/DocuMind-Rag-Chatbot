@@ -25,7 +25,7 @@ class GraphState(TypedDict):
     sources: List[str]
 
 
-# ---------- Helpers ----------
+# Takes the retrieved chunks and joins them into one block of text, separated by blank lines. 
 def format_context(docs: List[Document]) -> str:
     return "\n\n".join(d.page_content for d in docs)
 
@@ -41,14 +41,14 @@ def build_graph(retriever):
     llm = ChatOpenAI(model=LLM_MODEL, api_key=OPENAI_API_KEY, temperature=0)
     parser = StrOutputParser()
 
-    grade_chain = GRADE_PROMPT | llm | parser
+    grade_chain = GRADE_PROMPT | llm | parser #prompts are stpred in prompts.py file
     rewrite_chain = REWRITE_PROMPT | llm | parser
     generate_chain = GENERATE_PROMPT | llm | parser
 
     # ----- Nodes -----
     def retrieve(state: GraphState):
         docs = retriever.invoke(state["search_query"])
-        return {"docs": docs}
+        return {"docs": docs}   #Searches Chroma with the current query and stores the 4 best chunks in docs.
 
     def grade(state: GraphState):
         reply = grade_chain.invoke({

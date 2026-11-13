@@ -29,7 +29,7 @@ with st.sidebar:
     uploaded = st.file_uploader(
         "Resume PDF(s)",
         type=["pdf"],
-        accept_multiple_files=True,
+        accept_multiple_files=True,         #this helps to upload multiple files at once
         key=f"uploader_{st.session_state.uploader_key}",
     )
 
