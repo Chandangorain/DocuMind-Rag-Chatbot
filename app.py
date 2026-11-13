@@ -92,7 +92,7 @@ if question:
     with st.chat_message("user"):
         st.markdown(question)
 
-      with st.chat_message("assistant"):
+    with st.chat_message("assistant"):
         session_id = st.session_state.session_id
         use_cache = CACHE_ENABLED and not looks_like_follow_up(question, bool(history))
         answer, sources, from_cache = None, [], False
@@ -124,7 +124,7 @@ if question:
         if from_cache:
             st.caption("⚡ Answered from cache")
 
-            
+
         if sources:
             with st.expander("Sources"):
                 for s in sources:
