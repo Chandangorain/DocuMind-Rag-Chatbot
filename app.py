@@ -92,14 +92,39 @@ if question:
     with st.chat_message("user"):
         st.markdown(question)
 
-    with st.chat_message("assistant"):
-        try:
-            with st.spinner("Thinking..."):
-                answer, sources = ask(st.session_state.graph, question, history)
-        except Exception as e:
-            answer, sources = f"Sorry, something went wrong: {e}", []
+      with st.chat_message("assistant"):
+        session_id = st.session_state.session_id
+        use_cache = CACHE_ENABLED and not looks_like_follow_up(question, bool(history))
+        answer, sources, from_cache = None, [], False
+
+        # 1. Try the cache first
+        if use_cache:
+            try:
+                hit = lookup(session_id, question)
+                if hit:
+                    answer, sources = hit
+                    from_cache = True
+            except Exception:
+                pass    # a cache problem should never break the chat
+
+        # 2. Cache miss: run the graph, then save the answer
+        if not from_cache:
+            try:
+                with st.spinner("Thinking..."):
+                    answer, sources = ask(st.session_state.graph, question, history)
+                if use_cache:
+                    try:
+                        store(session_id, question, answer, sources)
+                    except Exception:
+                        pass
+            except Exception as e:
+                answer, sources = f"Sorry, something went wrong: {e}", []
 
         st.markdown(answer)
+        if from_cache:
+            st.caption("⚡ Answered from cache")
+
+            
         if sources:
             with st.expander("Sources"):
                 for s in sources:
